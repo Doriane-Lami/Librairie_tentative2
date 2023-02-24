@@ -8,30 +8,7 @@
 
 <script setup>
 import StockView from "./StockView.vue";
-import Livre from "@/Livre";
-import {reactive} from "vue";
-defineProps(["leLivre"]);
-
-let listeL = reactive([]);
-function getLivres() {
-  const fetchOptions = { method: "GET" };
-  fetch(url, fetchOptions)
-      .then((response) => {
-        return response.json();
-      })
-      .then((dataJSON) => {
-        console.log(dataJSON);
-        // -- vider la liste des choses
-        listeL.splice(0, listeL.length);
-        // pour chaque donnée renvoyée par l'API
-        //  créer un objet instance de la classe Chose
-        //  et l'ajouter dans la liste listeC
-        dataJSON.forEach((v) =>
-            listeL.push(new Livre(v.id, v.titre, v.qtestock, v.prix))
-        );
-      })
-      .catch((error) => console.log(error));
-}
+import getLivres from "./StockView.vue";
 
 
 function plusStock(leLivre){

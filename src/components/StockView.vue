@@ -1,30 +1,11 @@
 <script setup>
 import { reactive, onMounted } from "vue";
 import Livre from "../Livre";
-const emit = defineEmits(["deleteL", "plus", "moins"]);
+defineProps(["leLivre"]);
 
-let data = reactive({
-  // La liste des produits affichée sous forme de table
-  listeLivres: {},
-});
+const emit = defineEmits(["plus", "moins"]);
 
-const url ="https://webmmi.iut-tlse3.fr/~pecatte/librairies/public/22/livres";
-
-function chargeProduits() {
-  let fetchOptions = { method: "GET" }; //On utilise GET pour collecter des données de l'API
-  fetch(url, fetchOptions)
-      .then((response) => {
-        return response.json(); // données format JSON
-      })
-      .then((dataJSON) => {
-        data.listeLivres = dataJSON; // les livres ne sont dans aucune sous catégorie de l'API
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-}
-
-let listeL = reactive([]);
+const listeL = reactive([]);
 function getLivres() {
   const fetchOptions = { method: "GET" };
   fetch(url, fetchOptions)
@@ -41,13 +22,6 @@ function getLivres() {
         dataJSON.forEach((v) =>
             listeL.push(new Livre(v.id, v.titre, v.qtestock, v.prix))
         );
-        let resHTML = ""; // variable pour contenir le html généré
-        for (let l of listeL) {
-          // boucle sur le tableau des livres
-          resHTML = resHTML + "<li>" + l.titre + "</li>";
-        }
-        // insérer le HTML dans la liste "les_livres" <ul></ul> indiquée dans le template
-        document.getElementById("les_livres").innerHTML = resHTML;
       })
       .catch((error) => console.log(error));
 }
@@ -73,11 +47,11 @@ onMounted(getLivres);
           <th>Vente</th>
           <!-- Si le tableau des produits est vide -->
         </tr>
-        <tr v-if="!data.listeLivres">
+        <tr v-if="!listeL">
           <td colspan="5">Veuillez patienter, chargement des livres...</td>
         </tr>
         <!-- Si le tableau des produits n'est pas vide -->
-        <tr v-for="livre in data.listeLivres" :key="livre.id">
+        <tr v-for="livre in listeL" :key="livre.id">
           <td>{{ livre.id }}</td>
           <td>{{ livre.titre }}</td>
           <td>{{ livre.qtestock }}</td>
