@@ -11,4 +11,8 @@ import Livre from "../Livre";
   </li>
 </template>
 
-<style></style>
+<style>
+button{
+  background-color: white;
+}
+</style>

@@ -1,9 +1,14 @@
 <script setup>
 import { reactive, onMounted } from "vue";
 import Livre from "../Livre";
-defineProps(["leLivre"]);
+import Modifier_collection from "@/components/Modifier_collection.vue";
+import Plus_Moins_Suppr from "@/components/Plus_Moins_Suppr.vue";
 
-const emit = defineEmits(["plus", "moins"]);
+defineProps(["livre"]);
+
+
+const emit = defineEmits(["deleteL", "plus", "moins"]);
+const url = "https://webmmi.iut-tlse3.fr/~pecatte/librairies/public/22/livres"
 
 const listeL = reactive([]);
 function getLivres() {
@@ -26,7 +31,6 @@ function getLivres() {
       .catch((error) => console.log(error));
 }
 
-
 // A l'affichage du composant, on affiche la liste
 onMounted(getLivres);
 
@@ -45,10 +49,11 @@ onMounted(getLivres);
           <th>Quantité en stock</th>
           <th>Arrivage</th>
           <th>Vente</th>
+          <th>Supprimer</th>
           <!-- Si le tableau des produits est vide -->
         </tr>
         <tr v-if="!listeL">
-          <td colspan="5">Veuillez patienter, chargement des livres...</td>
+          <td colspan="6">Veuillez patienter, chargement des livres...</td>
         </tr>
         <!-- Si le tableau des produits n'est pas vide -->
         <tr v-for="livre in listeL" :key="livre.id">
@@ -65,6 +70,9 @@ onMounted(getLivres);
               Enlever un exemplaire
             </button>
           </td>
+          <td>
+            <button @click="$emit('deleteL', livre.id)">Supprimer</button>
+          </td>
         </tr>
       </table>
     </div>
@@ -73,9 +81,15 @@ onMounted(getLivres);
 
 
 <style scoped>
+caption{
+  color :rgb(171, 39, 79);
+  margin: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
 td,
 th {
-  border: 1px solid #ddd;
+  border: 1px solid rgb(171, 39, 79);
   padding: 8px;
 }
 
@@ -83,7 +97,12 @@ th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #232623;
+  background-color: rgb(171, 39, 79);
   color: rgb(255, 255, 255);
+}
+
+button{
+  background-color: white;
+  border: none;
 }
 </style>

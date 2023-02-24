@@ -39,11 +39,19 @@ onMounted(rechercherLivre);
 
 <style>
 #les_livres li {
-  list-style: none;
+  list-style-image: url('../assets/livre.png');
+  margin-left: 100px;
+  font-size: 15px;
+  text-transform: capitalize;
 }
 
-img {
-  width: 100%;
-  height: auto;
+#title{
+  border: 2px solid rgb(171, 39, 79);
+text-align: center;
+}
+
+button{
+  background: rgb(171, 39, 79);
+  border: 2px solid rgb(171, 39, 79);
 }
 </style>

@@ -4,7 +4,7 @@ const emit = defineEmits(["getL"]);
 import { reactive, onMounted } from "vue";
 import Livre from "../Livre";
 import Ajout_View from "@/components/Ajout_View.vue";
-
+import StockView from "@/components/StockView.vue";
 const listeL = reactive([]);
 
 // -- l'url de l'API
@@ -82,7 +82,9 @@ function handlerDelete(id) {
         getLivres();
       })
       .catch((error) => console.log(error));
-}
+};
+
+
 
 onMounted(getLivres);
 
@@ -92,14 +94,13 @@ onMounted(getLivres);
   <h3>Ajouter un livre à notre collection</h3>
   <Ajout_View @addL="handlerAdd"></Ajout_View>
   <StockView @deleteL="handlerDelete"></StockView>
-  <ul>
-    <View_suppr_livre
-        v-for="livre of listeL"
-        :key="livre.id"
-        :livre="livre"
-        @deleteL="handlerDelete"
-    />
-  </ul>
+
 </template>
 
-<style scoped></style>
+<style scoped>
+h3{
+  color: rgb(171, 39, 79);
+}
+
+
+</style>

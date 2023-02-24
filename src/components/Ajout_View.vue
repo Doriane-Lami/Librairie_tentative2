@@ -24,8 +24,17 @@ const emit = defineEmits(["addL"]);
         step="0.1"
         placeholder="prix unitaire"
     />
-    <input type="submit" value="valider" />
+    <input id="ok" type="submit" value="valider" />
   </form>
 </template>
 
-<style scoped></style>
+<style scoped>
+input{
+  border: 1px solid rgb(171, 39, 79);
+  text-align: center;
+}
+
+#ok{
+  background-color: rgb(171, 39, 79);
+}
+</style>

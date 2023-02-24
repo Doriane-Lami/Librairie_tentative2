@@ -8,8 +8,12 @@
 
 <script setup>
 import StockView from "./StockView.vue";
-import getLivres from "./StockView.vue";
+import Modifier_collection from "@/components/Modifier_collection.vue";
+import {onMounted} from "vue";
 
+defineProps(["leLivre"]);
+
+const url = "https://webmmi.iut-tlse3.fr/~pecatte/librairies/public/22/livres"
 
 function plusStock(leLivre){
   console.log(leLivre);
@@ -46,7 +50,9 @@ function moinsStock(leLivre){
   console.log(leLivre);
   leLivre.decrementerStock();
   console.log(leLivre.qtestock);
-
+  if(leLivre.qtestock === 0){
+    handlerDelete(leLivre.id);
+  }
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   // -- la chose modifiée est envoyé au serveur
@@ -73,6 +79,8 @@ function moinsStock(leLivre){
       })
       .catch((error) => console.log(error));
 }
+
+onMounted(getLivres);
 </script>
 
 <style scoped>
