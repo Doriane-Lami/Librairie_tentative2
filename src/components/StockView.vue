@@ -1,17 +1,12 @@
 <script setup>
 import { reactive, onMounted } from "vue";
 import Livre from "../Livre";
-
-
-
-defineProps(["leLivre"]);
 const emit = defineEmits(["deleteL", "plus", "moins"]);
 
 let data = reactive({
   // La liste des produits affichée sous forme de table
   listeLivres: {},
 });
-const listeL = reactive([]);
 
 const url ="https://webmmi.iut-tlse3.fr/~pecatte/librairies/public/22/livres";
 
@@ -29,6 +24,7 @@ function chargeProduits() {
       });
 }
 
+let listeL = reactive([]);
 function getLivres() {
   const fetchOptions = { method: "GET" };
   fetch(url, fetchOptions)
@@ -45,6 +41,13 @@ function getLivres() {
         dataJSON.forEach((v) =>
             listeL.push(new Livre(v.id, v.titre, v.qtestock, v.prix))
         );
+        let resHTML = ""; // variable pour contenir le html généré
+        for (let l of listeL) {
+          // boucle sur le tableau des livres
+          resHTML = resHTML + "<li>" + l.titre + "</li>";
+        }
+        // insérer le HTML dans la liste "les_livres" <ul></ul> indiquée dans le template
+        document.getElementById("les_livres").innerHTML = resHTML;
       })
       .catch((error) => console.log(error));
 }
@@ -56,7 +59,6 @@ onMounted(getLivres);
 </script>
 
 <template>
-  <Plus_Moins_Suppr.vue @chargerLivre="chargeProduits"></Plus_Moins_Suppr.vue>
   <main>
     <div>
       <table>

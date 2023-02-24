@@ -1,11 +1,38 @@
 <template>
-  <StockView @plus="plusStock(livre)"></StockView>
-  <StockView @moins="moinsStock"></StockView>
+  <StockView
+      @plus="plusStock"
+      @moins="moinsStock"
+  />
 
 </template>
 
 <script setup>
 import StockView from "./StockView.vue";
+import Livre from "@/Livre";
+import {reactive} from "vue";
+defineProps(["leLivre"]);
+
+let listeL = reactive([]);
+function getLivres() {
+  const fetchOptions = { method: "GET" };
+  fetch(url, fetchOptions)
+      .then((response) => {
+        return response.json();
+      })
+      .then((dataJSON) => {
+        console.log(dataJSON);
+        // -- vider la liste des choses
+        listeL.splice(0, listeL.length);
+        // pour chaque donnée renvoyée par l'API
+        //  créer un objet instance de la classe Chose
+        //  et l'ajouter dans la liste listeC
+        dataJSON.forEach((v) =>
+            listeL.push(new Livre(v.id, v.titre, v.qtestock, v.prix))
+        );
+      })
+      .catch((error) => console.log(error));
+}
+
 
 function plusStock(leLivre){
   console.log(leLivre);
@@ -33,7 +60,7 @@ function plusStock(leLivre){
       .then((dataJSON) => {
         console.log(dataJSON);
         // actualiser la liste des livres
-        chargeProduits();
+        getLivres();
       })
       .catch((error) => console.log(error));
 }
@@ -42,10 +69,6 @@ function moinsStock(leLivre){
   console.log(leLivre);
   leLivre.decrementerStock();
   console.log(leLivre.qtestock);
-
-  if(leLivre.qtestock == 0){
-    emit("deleteL", leLivre.id);
-  }
 
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -69,7 +92,7 @@ function moinsStock(leLivre){
       .then((dataJSON) => {
         console.log(dataJSON);
         // actualiser la liste des livres
-        chargeProduits();
+        getLivres();
       })
       .catch((error) => console.log(error));
 }

@@ -2,9 +2,8 @@
 const emit = defineEmits(["getL"]);
 
 import { reactive, onMounted } from "vue";
-import View_suppr_livre from "./View_suppr_livre.vue";
 import Livre from "../Livre";
-import La_liste_des_livres from "./La_liste_des_livres.vue";
+import Ajout_View from "@/components/Ajout_View.vue";
 
 const listeL = reactive([]);
 
@@ -60,6 +59,7 @@ function handlerAdd(titre, qtestock, prix) {
         return response.json();
       })
       .then((dataJSON) => {
+        console.log("coucou4");
         console.log(dataJSON);
         getLivres();
       })
@@ -84,14 +84,12 @@ function handlerDelete(id) {
       .catch((error) => console.log(error));
 }
 
-onMounted(() => {
-  getLivres();
-});
+onMounted(getLivres);
 
 </script>
 
 <template>
-  <h3>Liste des livres</h3>
+  <h3>Ajouter un livre à notre collection</h3>
   <Ajout_View @addL="handlerAdd"></Ajout_View>
   <StockView @deleteL="handlerDelete"></StockView>
   <ul>
